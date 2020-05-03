@@ -16,7 +16,6 @@ const InnerDayGrid: React.FC<IProps> = ({ year, month, cls }) => {
   const dayOfMonth = new Date(year, month + 1, 0).getDate();
   const firstDayOfMonth = (new Date(year, month, 1).getDay() || 7) - 1;
   const dayOfPrevMonth = new Date(year, month, 0).getDate();
-  console.log({ year, month, dayOfMonth, firstDayOfMonth, dayOfPrevMonth });
   const data = Array(42);
   let fillPrev = dayOfPrevMonth;
   for (let i = firstDayOfMonth - 1; i >= 0; i--) {
@@ -35,7 +34,6 @@ const InnerDayGrid: React.FC<IProps> = ({ year, month, cls }) => {
   for (let fillNext = validDayIdx; fillNext < 42; fillNext++) {
     data[fillNext] = { value: fillNext - (validDayIdx - 1), active: false };
   }
-  // console.log(data)
   return (
     <React.Fragment>
       <div className={['day-grid', cls].join(' ')}>
@@ -50,8 +48,7 @@ const InnerDayGrid: React.FC<IProps> = ({ year, month, cls }) => {
     </React.Fragment>
   );
 };
-
-const DayGrid = () => {
+const DayGrid: React.FC = () => {
   const day = useContext(calendarContext);
 
   const monthPrev = useMemo(() => {
@@ -73,7 +70,25 @@ const DayGrid = () => {
       month: day.month + 1
     };
   }, [day.year, day.month]);
-  console.log({ monthBefore: monthPrev, monthAfter: monthNext });
+  const onAnimationEnd = () => {
+    if (day.changing === 'down') {
+      if (day.month === 0) {
+        day.setYear!(day.year - 1);
+        day.setMonth!(11);
+      } else {
+        day.setMonth!(day.month - 1);
+      }
+    } else if (day.changing === 'up') {
+      if (day.month === 11) {
+        day.setYear!(day.year + 1);
+        day.setMonth!(0);
+      } else {
+        day.setMonth!(day.month + 1);
+      }
+    }
+    day!.setChanging!('');
+  };
+
   return (
     <div className={'grid-container'}>
       <div className={'day-of-week'}>
@@ -83,15 +98,32 @@ const DayGrid = () => {
           </React.Fragment>
         ))}
       </div>
-      <div className={'day-grid-container'}>
-        {/*<InnerDayGrid key={ymToKey(monthPrev)} cls={'month-prev'} year={monthPrev.year} month={monthPrev.month} />*/}
+      <div
+        onAnimationEnd={onAnimationEnd}
+        className={[
+          'day-grid-container',
+          'current',
+          `${day.changing && 'changing-' + day.changing}`
+        ].join(' ')}
+      >
+        <InnerDayGrid
+          key={ymToKey(monthPrev)}
+          cls={'month-prev'}
+          year={monthPrev.year}
+          month={monthPrev.month}
+        />
         <InnerDayGrid
           key={ymToKey(day)}
           cls={'month-current'}
           year={day.year}
           month={day.month}
         />
-        {/*<InnerDayGrid key={ymToKey(monthNext)} cls={'month-next'} year={monthNext.year} month={monthNext.month} />*/}
+        <InnerDayGrid
+          key={ymToKey(monthNext)}
+          cls={'month-next'}
+          year={monthNext.year}
+          month={monthNext.month}
+        />
       </div>
     </div>
   );

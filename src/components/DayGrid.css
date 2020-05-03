@@ -54,3 +54,51 @@
     line-height: var(--grid-height);
     color: var(--font-color);
 }
+
+
+/* DayGrid transition */
+
+
+.day-grid-container.current .day-grid.month-prev,
+.day-grid-container.current .day-grid.month-next,
+.day-grid-container.prev .day-grid.month-current,
+.day-grid-container.prev .day-grid.month-next,
+.day-grid-container.next .day-grid.month-prev,
+.day-grid-container.next .day-grid.month-current {
+    /*display: none;*/
+}
+
+@keyframes grid-up {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(-200%);
+    }
+}
+@keyframes grid-down {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+.day-grid-container.current .day-grid.month-prev,
+.day-grid-container.current .day-grid.month-current,
+.day-grid-container.current .day-grid.month-next{
+    transform: translateY(-100%);
+}
+.day-grid-container.current.changing-up .day-grid.month-prev,
+.day-grid-container.current.changing-up .day-grid.month-current,
+.day-grid-container.current.changing-up .day-grid.month-next {
+    animation: grid-up ease-in-out .5s;
+}
+.day-grid-container.current.changing-down .day-grid.month-prev,
+.day-grid-container.current.changing-down .day-grid.month-current,
+.day-grid-container.current.changing-down .day-grid.month-next {
+    animation: grid-down ease-in-out .5s;
+}
+/*.day-grid-container.current.changing-down .day-grid.month-prev {*/
+/*    transform: translateY(0);*/
+/*}*/
