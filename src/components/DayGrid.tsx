@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import './DayGrid.css';
-import { showDayOfWeek } from '../date/day-of-week';
+import { IDate, showDayOfWeek, equalIDate } from '../date/day-of-week';
 import { calendarContext } from './calendar-context';
 
 interface IYearMonth {
@@ -11,8 +11,16 @@ const ymToKey = (ym: IYearMonth): string => ym.year + '-' + ym.month;
 interface IProps extends IYearMonth {
   key?: React.Key;
   cls?: string;
+  onSelected?: (d: IDate) => void;
+  selected: IDate;
 }
-const InnerDayGrid: React.FC<IProps> = ({ year, month, cls }) => {
+const InnerDayGrid: React.FC<IProps> = ({
+  year,
+  month,
+  cls,
+  onSelected,
+  selected
+}) => {
   const dayOfMonth = new Date(year, month + 1, 0).getDate();
   const firstDayOfMonth = (new Date(year, month, 1).getDay() || 7) - 1;
   const dayOfPrevMonth = new Date(year, month, 0).getDate();
@@ -39,16 +47,28 @@ const InnerDayGrid: React.FC<IProps> = ({ year, month, cls }) => {
       <div className={['day-grid', cls].join(' ')}>
         {data.map(day => (
           <React.Fragment key={day.active.toString() + day.value}>
-            <div className={`grid ${day.active ? 'active' : ''}`}>
-              {day.value}
-            </div>
+            {day.active && (
+              <div
+                className={`grid active ${
+                  equalIDate(selected, { year, month, date: day.value })
+                    ? 'selected'
+                    : ''
+                }`}
+                onClick={() => {
+                  onSelected && onSelected({ year, month, date: day.value });
+                }}
+              >
+                {day.value}
+              </div>
+            )}
+            {!day.active && <div className={`grid`}>{day.value}</div>}
           </React.Fragment>
         ))}
       </div>
     </React.Fragment>
   );
 };
-const DayGrid: React.FC = () => {
+const DayGrid: React.FC<{ onSelected: (d: IDate) => void }> = props => {
   const day = useContext(calendarContext);
 
   const monthPrev = useMemo(() => {
@@ -89,6 +109,10 @@ const DayGrid: React.FC = () => {
     day!.setChanging!('');
   };
 
+  const onSelected = (d: IDate) => {
+    day!.setDate!(d);
+    props.onSelected && props.onSelected(d);
+  };
   return (
     <div className={'grid-container'}>
       <div className={'day-of-week'}>
@@ -111,18 +135,22 @@ const DayGrid: React.FC = () => {
           cls={'month-prev'}
           year={monthPrev.year}
           month={monthPrev.month}
+          selected={day.date}
         />
         <InnerDayGrid
+          onSelected={onSelected}
           key={ymToKey(day)}
           cls={'month-current'}
           year={day.year}
           month={day.month}
+          selected={day.date}
         />
         <InnerDayGrid
           key={ymToKey(monthNext)}
           cls={'month-next'}
           year={monthNext.year}
           month={monthNext.month}
+          selected={day.date}
         />
       </div>
     </div>
