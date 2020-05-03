@@ -1,0 +1,20 @@
+:root {
+    font-size: 12px;
+    --main-bg-color: #215d73;
+    --font-color: white;
+    --font-color-normal: #cdd3d5;
+    --font-color-light: #7a9eab;
+    --arrow-color: #dfdfdf;
+
+    --outer-border-width: 2.4px;
+    --inner-border-width: 2.4px;
+    --outer-border-color: #7a9eab;
+    --inner-border-color: black;
+
+    --grid-width: 4rem;
+    --grid-height: 4rem;
+    --grid-row-gap: 4px;
+    --grid-col-gap: 4px;
+
+    --grid-font-size: 1.4rem;
+}

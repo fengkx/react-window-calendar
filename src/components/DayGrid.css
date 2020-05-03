@@ -1,0 +1,56 @@
+.grid-container {
+    position: relative;
+    width: 100%;
+    flex-grow: 1;
+}
+.day-grid-container {
+    height: calc(var(--grid-height) * 6 + 2rem);
+    position: absolute;
+    left: calc(var(--grid-width) / 4);
+    overflow: hidden;
+}
+.day-grid {
+    display: grid;
+    grid-template-columns: repeat(7, var(--grid-width));
+    text-align: center;
+    vertical-align: middle;
+    max-height: calc(var(--grid-height) * 7);
+    grid-auto-rows: var(--grid-height);
+    grid-row-gap: var(--grid-row-gap);
+    grid-column-gap: var(--grid-col-gap);
+}
+
+.day-grid > .grid {
+    line-height: var(--grid-height);
+    text-align: center;
+    font-size: var(--grid-font-size);
+    color: var(--font-color-light);
+}
+.day-grid > .grid.active {
+    color: var(--font-color);
+}
+.day-grid > .grid:not(.selected):hover {
+    box-sizing: border-box;
+    border: var(--outer-border-color) var(--outer-border-width) solid;
+    line-height: calc(var(--grid-height) - calc(var(--outer-border-width) * 2));
+}
+
+.day-grid > .grid.selected {
+    border: var(--outer-border-color) var(--outer-border-width) solid;
+    box-shadow: inset 0 0 0 var(--inner-border-width) var(--inner-border-color);;
+}
+
+.day-of-week {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(var(--grid-width) * 8);
+    padding: 0 1rem;
+}
+.day-of-week > span {
+    height: var(--grid-height);
+    width: var(--grid-width);
+    text-align: center;
+    line-height: var(--grid-height);
+    color: var(--font-color);
+}

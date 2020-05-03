@@ -1,0 +1,16 @@
+.win-calendar {
+    width: calc(var(--grid-width) * 8);
+    height: calc(var(--grid-height) * 9);
+    background-color: var(--main-bg-color);
+
+    /*padding: calc(var(--grid-width) / 4);*/
+    padding-top: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.win-calendar * {
+    box-sizing: border-box;
+}
