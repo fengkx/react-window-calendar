@@ -16,5 +16,12 @@
     --grid-row-gap: 4px;
     --grid-col-gap: 4px;
 
+    --month-grid-width: 7rem;
+    --month-grid-height: 7rem;
+    --month-grid-bg-hl: #2D7D9A;
+
+    --year-grid-width: 7rem;
+    --year-grid-height: 7rem;
+
     --grid-font-size: 1.4rem;
 }

@@ -1,7 +1,8 @@
 import React, { useContext, useMemo } from 'react';
 import './DayGrid.css';
-import { IDate, showDayOfWeek, equalIDate } from '../date/day-of-week';
+import { IDate, equalIDate } from '../date/day-of-week';
 import { calendarContext } from './calendar-context';
+import DayOfWeek from './DayOfWeek';
 
 interface IYearMonth {
   year: number;
@@ -58,10 +59,14 @@ const InnerDayGrid: React.FC<IProps> = ({
                   onSelected && onSelected({ year, month, date: day.value });
                 }}
               >
-                {day.value}
+                <span className="text">{day.value}</span>
               </div>
             )}
-            {!day.active && <div className={`grid`}>{day.value}</div>}
+            {!day.active && (
+              <div className={`grid`}>
+                <span className="text">{day.value}</span>
+              </div>
+            )}
           </React.Fragment>
         ))}
       </div>
@@ -69,65 +74,58 @@ const InnerDayGrid: React.FC<IProps> = ({
   );
 };
 const DayGrid: React.FC<{ onSelected: (d: IDate) => void }> = props => {
-  const day = useContext(calendarContext);
+  const ctx = useContext(calendarContext);
 
   const monthPrev = useMemo(() => {
-    if (day.month === 0) {
-      return { year: day.year - 1, month: 11 };
+    if (ctx.month === 0) {
+      return { year: ctx.year - 1, month: 11 };
     }
     return {
-      year: day.year,
-      month: day.month - 1
+      year: ctx.year,
+      month: ctx.month - 1
     };
-  }, [day.year, day.month]);
+  }, [ctx.year, ctx.month]);
 
   const monthNext = useMemo(() => {
-    if (day.month === 11) {
-      return { year: day.year + 1, month: 0 };
+    if (ctx.month === 11) {
+      return { year: ctx.year + 1, month: 0 };
     }
     return {
-      year: day.year,
-      month: day.month + 1
+      year: ctx.year,
+      month: ctx.month + 1
     };
-  }, [day.year, day.month]);
+  }, [ctx.year, ctx.month]);
   const onAnimationEnd = () => {
-    if (day.changing === 'down') {
-      if (day.month === 0) {
-        day.setYear!(day.year - 1);
-        day.setMonth!(11);
+    if (ctx.changing === 'down') {
+      if (ctx.month === 0) {
+        ctx.setYear!(ctx.year - 1);
+        ctx.setMonth!(11);
       } else {
-        day.setMonth!(day.month - 1);
+        ctx.setMonth!(ctx.month - 1);
       }
-    } else if (day.changing === 'up') {
-      if (day.month === 11) {
-        day.setYear!(day.year + 1);
-        day.setMonth!(0);
+    } else if (ctx.changing === 'up') {
+      if (ctx.month === 11) {
+        ctx.setYear!(ctx.year + 1);
+        ctx.setMonth!(0);
       } else {
-        day.setMonth!(day.month + 1);
+        ctx.setMonth!(ctx.month + 1);
       }
     }
-    day!.setChanging!('');
+    ctx!.setChanging!('');
   };
 
   const onSelected = (d: IDate) => {
-    day!.setDate!(d);
+    ctx!.setDate!(d);
     props.onSelected && props.onSelected(d);
   };
   return (
-    <div className={'grid-container'}>
-      <div className={'day-of-week'}>
-        {showDayOfWeek().map(dow => (
-          <React.Fragment key={dow}>
-            <span>{dow}</span>
-          </React.Fragment>
-        ))}
-      </div>
+    <>
+      <DayOfWeek />
       <div
         onAnimationEnd={onAnimationEnd}
         className={[
           'day-grid-container',
-          'current',
-          `${day.changing && 'changing-' + day.changing}`
+          `${ctx.changing && 'changing-' + ctx.changing}`
         ].join(' ')}
       >
         <InnerDayGrid
@@ -135,25 +133,25 @@ const DayGrid: React.FC<{ onSelected: (d: IDate) => void }> = props => {
           cls={'month-prev'}
           year={monthPrev.year}
           month={monthPrev.month}
-          selected={day.date}
+          selected={ctx.date}
         />
         <InnerDayGrid
           onSelected={onSelected}
-          key={ymToKey(day)}
+          key={ymToKey(ctx)}
           cls={'month-current'}
-          year={day.year}
-          month={day.month}
-          selected={day.date}
+          year={ctx.year}
+          month={ctx.month}
+          selected={ctx.date}
         />
         <InnerDayGrid
           key={ymToKey(monthNext)}
           cls={'month-next'}
           year={monthNext.year}
           month={monthNext.month}
-          selected={day.date}
+          selected={ctx.date}
         />
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,0 +1,30 @@
+.grid-container {
+    position: relative;
+    width: 100%;
+    flex-grow: 1;
+}
+
+@keyframes fade-slide {
+    0% {
+        transform: scale(1);
+        visibility: visible;
+        opacity: 0;
+    }
+    50% {
+        transform: scale(0.25);
+        opacity: 1;
+        visibility: hidden;
+    }
+    100% {
+        transform: scale(1);
+        visibility: visible;
+        opacity: 0;
+    }
+}
+
+.grid-container.changing-month,
+.grid-container.changing-year,
+.grid-container.changing-day
+{
+    animation: fade-slide cubic-bezier(0.15, 0.03, 0.27, 1.55) .75s;
+}

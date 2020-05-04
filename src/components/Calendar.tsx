@@ -1,9 +1,9 @@
 import React from 'react';
 import { CalendarContextProvider } from './calendar-context';
 import Header from './Header';
-import DayGrid from './DayGrid';
 import { IDate } from '../date/day-of-week';
 import './Calendar.css';
+import ContextRouter from './ContextRouter';
 
 interface ICalendarProps {
   onSelected?: (d: IDate) => void;
@@ -14,9 +14,10 @@ const Calendar: React.FC<ICalendarProps> = ({ onSelected }) => {
     <CalendarContextProvider>
       <div className={'win-calendar'}>
         <Header />
-        <DayGrid onSelected={onSelected!} />
+        <ContextRouter onSelected={onSelected!} />
       </div>
     </CalendarContextProvider>
   );
 };
+
 export default Calendar;

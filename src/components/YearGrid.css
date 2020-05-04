@@ -1,0 +1,71 @@
+.year-grid-container {
+    height: calc(var(--year-grid-width) * 4 + 1rem);
+    position: absolute;
+    left: calc(var(--year-grid-width) / 4);
+    overflow: hidden;
+}
+
+.year-grid {
+    display: grid;
+    grid-template-columns: repeat(4, var(--month-grid-width));
+    grid-template-rows: repeat(4, var(--month-grid-height));
+    grid-auto-rows: var(--month-grid-width);
+    grid-row-gap: var(--grid-row-gap);
+    grid-column-gap: var(--grid-col-gap);
+}
+.year-grid > .grid {
+    font-size: 1.3rem;
+    color: var(--font-color-light);
+}
+.year-grid > .grid.active {
+    color: var(--font-color);
+}
+.year-grid > .grid:hover {
+    box-sizing: border-box;
+    border: var(--outer-border-color) var(--outer-border-width) solid;
+}
+.year-grid > .grid.selected {
+    background-color: var(--month-grid-bg-hl);
+    font-weight: 600;
+}
+.grid > .text {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* YearGrid Animation */
+
+@keyframes grid-up {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(-200%);
+    }
+}
+@keyframes grid-down {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+.year-grid-container .year-grid.decade-prev,
+.year-grid-container .year-grid.decade-current,
+.year-grid-container .year-grid.decade-next{
+    transform: translateY(-100%);
+}
+.year-grid-container.changing-up .year-grid.decade-prev,
+.year-grid-container.changing-up .year-grid.decade-current,
+.year-grid-container.changing-up .year-grid.decade-next {
+    animation: grid-up ease-in-out .5s;
+}
+.year-grid-container.changing-down .year-grid.decade-prev,
+.year-grid-container.changing-down .year-grid.decade-current,
+.year-grid-container.changing-down .year-grid.decade-next {
+    animation: grid-down ease-in-out .5s;
+}

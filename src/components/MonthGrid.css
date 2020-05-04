@@ -1,0 +1,72 @@
+.month-grid-container {
+    height: calc(var(--month-grid-width) * 4 + 2rem);
+    position: absolute;
+    left: calc(var(--month-grid-width) / 4);
+    overflow: hidden;
+}
+
+.month-grid {
+    display: grid;
+    grid-template-columns: repeat(4, var(--month-grid-width));
+    grid-template-rows: repeat(4, var(--month-grid-height));
+    grid-auto-rows: var(--month-grid-width);
+    grid-row-gap: var(--grid-row-gap);
+    grid-column-gap: var(--grid-col-gap);
+}
+.month-grid > .grid {
+    font-size: 1.3rem;
+    color: var(--font-color-light);
+}
+.month-grid > .grid.active {
+    color: var(--font-color);
+}
+.month-grid > .grid:hover {
+    box-sizing: border-box;
+    border: var(--outer-border-color) var(--outer-border-width) solid;
+}
+.month-grid > .grid.selected {
+    background-color: var(--month-grid-bg-hl);
+    font-weight: 600;
+}
+.grid > .text {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* MonthGrid animation */
+
+@keyframes grid-up {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(-200%);
+    }
+}
+@keyframes grid-down {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+.month-grid-container .month-grid.year-prev,
+.month-grid-container .month-grid.year-current,
+.month-grid-container .month-grid.year-next{
+    transform: translateY(-100%);
+}
+.month-grid-container.changing-up .month-grid.year-prev,
+.month-grid-container.changing-up .month-grid.year-current,
+.month-grid-container.changing-up .month-grid.year-next {
+    animation: grid-up ease-in-out .5s;
+}
+.month-grid-container.changing-down .month-grid.year-prev,
+.month-grid-container.changing-down .month-grid.year-current,
+.month-grid-container.changing-down .month-grid.year-next {
+    animation: grid-down ease-in-out .5s;
+}

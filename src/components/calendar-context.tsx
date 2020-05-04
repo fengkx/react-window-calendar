@@ -9,11 +9,13 @@ interface ICalendarContext {
   month: number;
   date: IDate;
   today: Date;
+  route: string;
   changing?: string;
   setYear?: setStateAction<number>;
   setMonth?: setStateAction<number>;
   setDate?: setStateAction<IDate>;
   setChanging?: setStateAction<string>;
+  setRoute?: setStateAction<string>;
 }
 
 enum Bits {
@@ -21,7 +23,8 @@ enum Bits {
   month,
   date,
   today,
-  changing
+  changing,
+  route
 }
 
 export enum ChangeBits {
@@ -29,13 +32,15 @@ export enum ChangeBits {
   month = 1 << Bits.month,
   date = 1 << Bits.date,
   today = 1 << Bits.today,
-  changing = 1 << Bits.changing
+  changing = 1 << Bits.changing,
+  route = 1 << Bits.route
 }
 const now = new Date();
 export const calendarContext = React.createContext<ICalendarContext>(
   {
     year: now.getFullYear(),
     month: now.getMonth(),
+    route: 'day',
     date: {
       date: now.getDate(),
       year: now.getFullYear(),
@@ -60,6 +65,9 @@ export const calendarContext = React.createContext<ICalendarContext>(
     if (prev.changing !== next.changing) {
       bits |= ChangeBits.changing;
     }
+    if (prev.route !== next.route) {
+      bits |= ChangeBits.route;
+    }
     return bits;
   }
 );
@@ -70,7 +78,8 @@ export const CalendarContextProvider: React.FC = ({ children }) => {
   const [month, setMonth] = useState(today.getMonth());
   const [date, setDate] = useState({ year, month, date: today.getDate() });
   const [changing, setChanging] = useState('');
-
+  // const [route, setRoute] = useState('day');
+  const [route, setRoute] = useState('month'); //TODO debuging
   const value = {
     year,
     month,
@@ -80,7 +89,9 @@ export const CalendarContextProvider: React.FC = ({ children }) => {
     setMonth,
     setDate,
     changing,
-    setChanging
+    setChanging,
+    route,
+    setRoute
   };
 
   return (

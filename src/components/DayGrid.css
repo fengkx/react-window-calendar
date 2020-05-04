@@ -1,8 +1,3 @@
-.grid-container {
-    position: relative;
-    width: 100%;
-    flex-grow: 1;
-}
 .day-grid-container {
     height: calc(var(--grid-height) * 6 + 2rem);
     position: absolute;
@@ -21,10 +16,16 @@
 }
 
 .day-grid > .grid {
-    line-height: var(--grid-height);
     text-align: center;
     font-size: var(--grid-font-size);
     color: var(--font-color-light);
+}
+.grid > .text {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .day-grid > .grid.active {
     color: var(--font-color);
@@ -32,28 +33,12 @@
 .day-grid > .grid:not(.selected):hover {
     box-sizing: border-box;
     border: var(--outer-border-color) var(--outer-border-width) solid;
-    line-height: calc(var(--grid-height) - calc(var(--outer-border-width) * 2));
 }
 
 .day-grid > .grid.active.selected {
     border: var(--outer-border-color) var(--outer-border-width) solid;
-    line-height: calc(var(--grid-height) - calc(var(--outer-border-width) * 2));
+    /*line-height: calc(var(--grid-height) - calc(var(--outer-border-width) * 2));*/
     box-shadow: inset 0 0 0 var(--inner-border-width) var(--inner-border-color);;
-}
-
-.day-of-week {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: calc(var(--grid-width) * 8);
-    padding: 0 1rem;
-}
-.day-of-week > span {
-    height: var(--grid-height);
-    width: var(--grid-width);
-    text-align: center;
-    line-height: var(--grid-height);
-    color: var(--font-color);
 }
 
 
@@ -85,19 +70,19 @@
         transform: translateY(0%);
     }
 }
-.day-grid-container.current .day-grid.month-prev,
-.day-grid-container.current .day-grid.month-current,
+.day-grid-container .day-grid.month-prev,
+.day-grid-container .day-grid.month-current,
 .day-grid-container.current .day-grid.month-next{
     transform: translateY(-100%);
 }
-.day-grid-container.current.changing-up .day-grid.month-prev,
-.day-grid-container.current.changing-up .day-grid.month-current,
-.day-grid-container.current.changing-up .day-grid.month-next {
+.day-grid-container.changing-up .day-grid.month-prev,
+.day-grid-container.changing-up .day-grid.month-current,
+.day-grid-container.changing-up .day-grid.month-next {
     animation: grid-up ease-in-out .5s;
 }
-.day-grid-container.current.changing-down .day-grid.month-prev,
-.day-grid-container.current.changing-down .day-grid.month-current,
-.day-grid-container.current.changing-down .day-grid.month-next {
+.day-grid-container.changing-down .day-grid.month-prev,
+.day-grid-container.changing-down .day-grid.month-current,
+.day-grid-container.changing-down .day-grid.month-next {
     animation: grid-down ease-in-out .5s;
 }
 /*.day-grid-container.current.changing-down .day-grid.month-prev {*/
