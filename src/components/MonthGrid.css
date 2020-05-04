@@ -1,5 +1,5 @@
 .month-grid-container {
-    height: calc(var(--month-grid-width) * 4 + 2rem);
+    height: calc(var(--month-grid-width) * 4 + 1rem);
     position: absolute;
     left: calc(var(--month-grid-width) / 4);
     overflow: hidden;
