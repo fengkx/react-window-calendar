@@ -78,8 +78,7 @@ export const CalendarContextProvider: React.FC = ({ children }) => {
   const [month, setMonth] = useState(today.getMonth());
   const [date, setDate] = useState({ year, month, date: today.getDate() });
   const [changing, setChanging] = useState('');
-  // const [route, setRoute] = useState('day');
-  const [route, setRoute] = useState('month'); //TODO debuging
+  const [route, setRoute] = useState('day');
   const value = {
     year,
     month,
